@@ -1,0 +1,36 @@
+version: "3"
+services:
+  ssh-remote-server:
+    tty: true
+    restart: always
+    container_name: ssh-remote-server
+    build:
+      context: .
+      dockerfile: ssh-remote-server.Dockerfile
+    ports:
+      - 22:22
+    tmpfs:
+      - /tmp
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./workspace:/home/code/workspace
+  code-server:
+    tty: true
+    restart: always
+    container_name: code-server
+    build:
+      context: .
+      dockerfile: code-server.Dockerfile
+    ports:
+      - 8080:8080
+    tmpfs:
+      - /tmp
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./workspace:/home/code/workspace
